@@ -1,3 +1,122 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <script src="shared/jquery.js" type="text/javascript"></script>
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="shared/shiny.css"/>
+
+
+<!--Use this to pick color https://htmlcolorcodes.com/ -->
+
+<style>
+.myborder{
+ border-style:solid;
+ border-color:#287EC7;
+ margin: 50px;
+ width: 500px;
+}
+{
+  box-sizing: border-box;
+}
+.column {
+  float: left;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 45%;
+}
+
+.right {
+  width: 15%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+  <style>
+.button {
+  background-color: #5BB5F0;
+  border: none;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: blue;
+}
+</style>
+
+</head>
+<body>
+  <h1>Revised International Prognostic Scoring System (IPSS-R) for Myelodysplastic Syndromes Risk Assessment Calculator</h1>
+  <p>Developed by the International Working Group for the Prognosis of MDS (IWG-PM) under the aegis of the MDS Foundation, Inc.
+
+When entering values into the calculator, note the units given in parentheses. Also note that the usual ranges, given for orientation, are in brackets. These are not normal ranges.</p>
+
+<div class="myborder">
+<div class="row">
+    <form action="" method="post">
+    <fieldset>
+        <div class="form-group">
+            <label >Hemoglobin (g/dL) [4-20]</label>
+            <input name="hemoglobin" type="text" class="form-control"/>
+        </div>
+
+        <div class="form-group">
+            <label >Absolute Neutrophil Count (x109/L) [0-15]</label>
+            <input name="anc" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Platelets (x109/L) [0-2000]</label>
+            <input name="platelets" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Bone Marrow Blasts (percent) [0-30]</label>
+            <input name="marrow" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Cytogenetic Category</label>
+              <div class="control">
+                <label class="radio">
+                  <input type="radio" name="cyto">
+                  Very Good
+                </label>
+                <label class="radio">
+                  <input type="radio" name="cyto">
+                  Good
+                </label>
+                <label class="radio">
+                  <input type="radio" name="cyto">
+                  Intermediate
+                </label>
+                <label class="radio">
+                  <input type="radio" name="cyto">
+                  Poor
+                </label>
+                <label class="radio">
+                  <input type="radio" name="cyto">
+                  Very Poor
+                </label>
+              </div>
+        </div>
+    </fieldset>
+    <input name="submit" type="submit" value="Submit" class="btn btn-secondary"/><hr/>
+    </form>
+</div>
+</div>
+</body>
 </html>
+
+
+

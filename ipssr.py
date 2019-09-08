@@ -6,76 +6,84 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+@app.route('/main')
+def main():
+    cc = request.form['cyto']
+    bmb = request.form['marrow']
+    h = request.form['hemoglobin']
+    p = request.form['platelets']
+    anc = request.form['anc']
+
+    score = calculate_ipssr(cc, bmb, h, p, anc)
+    values = {"score":score}
+    return render_template('home.html', elements = values)
 
 
 # Variables:
-#    CC:    Cytogenic Category ("verygood","good","intermediate","poor","verypoor")
-#    H:     Hemoglobin (g/dL)
-#    P:     Platlets (x10^9L):
-#    ANC:   Absolute Neutrophil Count (x10^9/L)
-#    BMB:   Bome Marrow Blasts (percent)
+#    cc:    Cytogenic Category ("verygood","good","intermediate","poor","verypoor")
+#    h:     Hemoglobin (g/dL)
+#    p:     Platlets (x10^9L):
+#    anc:   Absolute Neutrophil Count (x10^9/L)
+#    bmb:   Bome Marrow Blasts (percent)
 
-def CalculateIPSSR(CC, BMB, H, P, ANC):
-    return CC_Score(CC) + BMB_Score(BMB) + H_Score(H) + P_Score(P) + ANC_Score(ANC)
+def calculate_ipssr(cc, bmb, h, p, anc):
+    return cc_score(cc) + bmb_score(bmb) + h_score(h) + p_score(p) + anc_score(anc)
 
 
-def CC_Score(CC):
-    if CC == "verygood":
+def cc_score(cc):
+    if cc == "verygood":
         return 0
-    elif CC == "good":
+    elif cc == "good":
         return 1
-    elif CC == "intermediate":
+    elif cc == "intermediate":
         return 2
-    elif CC == "poor":
+    elif cc == "poor":
         return 3
-    elif CC == "verypoor":
+    elif cc == "verypoor":
         return 4
     else:
         return False
 
 
-def BMB_Score(BMB):
-    if BMB <= 2:
+def bmb_score(bmb):
+    if bmb <= 2:
         return 0
-    elif BMB < 5:
+    elif bmb < 5:
         return 1
-    elif BMB < 10:
+    elif bmb < 10:
         return 2
-    elif BMB <= 30:
+    elif bmb <= 30:
         return 3
     else:
         return False
 
 
-def H_Score(H):
-    if H >= 10:
+def h_score(h):
+    if h >= 10:
         return 0
-    elif H > 8:
+    elif h > 8:
         return 1
-    elif H >= 0:
+    elif h >= 0:
         return 1.5
     else:
         return False
 
 
-def P_Score(P):
-    if P >= 100:
+def p_score(p):
+    if p >= 100:
         return 0
-    elif P >= 50:
+    elif p >= 50:
         return 0.5
-    elif P >= 0:
+    elif p >= 0:
         return 1
     else:
         return False
 
 
-def ANC_Score(ANC):
-    if ANC >= 0.8:
+def anc_score(anc):
+    if anc >= 0.8:
         return 0
-    elif ANC >= 0:
+    elif anc >= 0:
         return 0.5
     else:
         return False
