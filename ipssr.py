@@ -4,9 +4,10 @@ from flask import Flask, render_template, redirect, url_for, request
 # Read configuration from file.
 config = configparser.ConfigParser()
 config.read('config.ini')
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
-@app.route('/main')
+
+@app.route('/main', methods=['GET', 'POST'])
 def main():
     cc = request.form['cyto']
     bmb = request.form['marrow']
@@ -15,8 +16,18 @@ def main():
     anc = request.form['anc']
 
     score = calculate_ipssr(cc, bmb, h, p, anc)
-    values = {"score":score}
+    category = calculate_cat(score)
+    values = {"score": score,
+              "category": category}
     return render_template('home.html', elements = values)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def start():
+    if "marrow" and "hemoglobin" and "platelets" and "anc" and "cyto" in request.form:
+        return redirect(url_for('main'))
+    else:
+        return render_template('start.html')
 
 
 # Variables:
@@ -28,6 +39,21 @@ def main():
 
 def calculate_ipssr(cc, bmb, h, p, anc):
     return cc_score(cc) + bmb_score(bmb) + h_score(h) + p_score(p) + anc_score(anc)
+
+
+def calculate_cat(score):
+    if score <= 1.5:
+        return "Very Low"
+    elif score > 1.5 and score <= 3:
+        return "Low"
+    elif score > 3 and score <= 4.5:
+        return "Intermediate"
+    elif score > 4.5 and score <= 6:
+        return "High"
+    elif score > 6:
+        return "Very High"
+    else:
+        return "Could not calculate score"
 
 
 def cc_score(cc):
