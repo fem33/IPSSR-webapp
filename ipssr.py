@@ -6,16 +6,22 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 app = Flask(__name__, template_folder='templates')
 
+cyto = ""
+blast = ""
+hemo = ""
+plate = ""
+anc = ""
+
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
-    cc = request.form['cyto']
-    bmb = request.form['marrow']
-    h = request.form['hemoglobin']
-    p = request.form['platelets']
-    anc = request.form['anc']
+    global cyto
+    global blast
+    global hemo
+    global plate
+    global anc
 
-    score = calculate_ipssr(cc, bmb, h, p, anc)
+    score = calculate_ipssr(cyto, int(blast), int(hemo), int(plate), int(anc))
     category = calculate_cat(score)
     values = {"score": score,
               "category": category}
@@ -25,6 +31,18 @@ def main():
 @app.route('/', methods=['GET', 'POST'])
 def start():
     if "marrow" and "hemoglobin" and "platelets" and "anc" and "cyto" in request.form:
+        global cyto
+        global blast
+        global hemo
+        global plate
+        global anc
+
+        cyto = request.form['cyto']
+        blast = request.form['marrow']
+        hemo = request.form['hemoglobin']
+        plate = request.form['platelets']
+        anc = request.form['anc']
+
         return redirect(url_for('main'))
     else:
         return render_template('start.html')
